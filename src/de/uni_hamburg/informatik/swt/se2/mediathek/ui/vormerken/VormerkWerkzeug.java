@@ -264,7 +264,7 @@ public class VormerkWerkzeug
      */
     private void zeigeAusgewaehltenKunden()
     {
-        Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde();
+        Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde(); // Ein Kommentar
         _kundenDetailAnzeigerWerkzeug.setKunde(kunde);
     }
 
