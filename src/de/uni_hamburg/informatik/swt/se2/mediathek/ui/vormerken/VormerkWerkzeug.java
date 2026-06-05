@@ -267,6 +267,7 @@ public class VormerkWerkzeug
         Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde(); // Ein Kommentar
         _kundenDetailAnzeigerWerkzeug.setKunde(kunde);
     }
+    // Weiterer Test
     /**
      * Setzt den Ausleihbutton auf benutzbar (enabled) falls die gerade
      * selektierten Medien alle ausgeliehen werden können und ein Kunde
