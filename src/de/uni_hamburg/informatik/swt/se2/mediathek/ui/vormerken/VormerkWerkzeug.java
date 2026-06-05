@@ -264,10 +264,9 @@ public class VormerkWerkzeug
      */
     private void zeigeAusgewaehltenKunden()
     {
-        Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde(); // Ein Kommentar noch einer
+        Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde(); // Ein Kommentar
         _kundenDetailAnzeigerWerkzeug.setKunde(kunde);
     }
-
     /**
      * Setzt den Ausleihbutton auf benutzbar (enabled) falls die gerade
      * selektierten Medien alle ausgeliehen werden können und ein Kunde
