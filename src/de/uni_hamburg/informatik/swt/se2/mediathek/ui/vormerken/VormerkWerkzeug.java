@@ -27,7 +27,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.ui.subwerkzeuge.vormerkmedien
  */
 public class VormerkWerkzeug
 {
-	// Test vom Mac
+	// Test vom Mac und das hier vom meinem HauptPC
     /**
      * Die UI-Komponente der Ausleihe.
      */
