@@ -19,7 +19,7 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.wertobjekte.Kundennummer;
  */
 public interface KundenstammService extends ObservableService
 {
-
+	// Weiterer Test
     /**
      * Entfernt einen Kunden aus dem Kundenbestand.
      * 
