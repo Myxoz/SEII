@@ -12,7 +12,6 @@ import de.uni_hamburg.informatik.swt.se2.mediathek.services.ServiceObserver;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.kundenstamm.KundenstammService;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.medienbestand.MedienbestandService;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.verleih.VerleihService;
-import de.uni_hamburg.informatik.swt.se2.mediathek.services.vormerken.VormerkService;
 import de.uni_hamburg.informatik.swt.se2.mediathek.ui.SubWerkzeugObserver;
 import de.uni_hamburg.informatik.swt.se2.mediathek.ui.subwerkzeuge.kundenauflister.KundenauflisterWerkzeug;
 import de.uni_hamburg.informatik.swt.se2.mediathek.ui.subwerkzeuge.kundendetailanzeiger.KundenDetailAnzeigerWerkzeug;
@@ -38,10 +37,6 @@ public class VormerkWerkzeug
      * Der Service zum Ausleihen von Medien.
      */
     private final VerleihService _verleihService;
-    /**
-     * Der Service zum Ausleihen von Medien.
-     */
-    private final VormerkService _vormerkService;
 
     /**
      * Das Sub-Werkzeug zum Darstellen und Selektieren der Kunden.
@@ -77,14 +72,13 @@ public class VormerkWerkzeug
      * @require verleihService != null
      */
     public VormerkWerkzeug(MedienbestandService medienbestand,
-            KundenstammService kundenstamm, VerleihService verleihService, VormerkService vormerkService)
+            KundenstammService kundenstamm, VerleihService verleihService)
     {
         assert medienbestand != null : "Vorbedingung verletzt: medienbestand != null";
         assert kundenstamm != null : "Vorbedingung verletzt: kundenstamm != null";
         assert verleihService != null : "Vorbedingung verletzt: verleihService != null";
 
         _verleihService = verleihService;
-        _vormerkService = vormerkService;
 
         // Subwerkzeuge erstellen
         _kundenAuflisterWerkzeug = new KundenauflisterWerkzeug(kundenstamm);
@@ -227,6 +221,26 @@ public class VormerkWerkzeug
             return false;
         }
 
+        for (Medium medium : medien)
+        {
+            if (_verleihService.istVerliehenAn(kunde, medium))
+            {
+                return false;
+            }
+
+            List<Kunde> vormerker = _verleihService.getVormerker(medium);
+
+            if (vormerker.size() >= 3)
+            {
+                return false;
+            }
+
+            if (vormerker.contains(kunde))
+            {
+                return false;
+            }
+
+        }
         return true;
     }
 
@@ -244,9 +258,13 @@ public class VormerkWerkzeug
 
         // TODO für Aufgabenblatt 6 (nicht löschen): Vormerken einbauen
 
-        // if (istVormerkenMoeglich())
-            // for (Medium medium : selectedMedien)
-                // .merkeVor(selectedKunde, medium);
+        if (istVormerkenMoeglich())
+        {
+            for (Medium medium : selectedMedien)
+            {
+                _verleihService.merkeVor(selectedKunde, medium);
+            }
+        }
     }
 
     /**
@@ -264,10 +282,10 @@ public class VormerkWerkzeug
      */
     private void zeigeAusgewaehltenKunden()
     {
-        Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde(); // Ein Kommentar
+        Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde();
         _kundenDetailAnzeigerWerkzeug.setKunde(kunde);
     }
-    // Weiterer Test
+
     /**
      * Setzt den Ausleihbutton auf benutzbar (enabled) falls die gerade
      * selektierten Medien alle ausgeliehen werden können und ein Kunde

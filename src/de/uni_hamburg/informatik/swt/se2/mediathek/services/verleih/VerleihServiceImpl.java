@@ -31,6 +31,12 @@ public class VerleihServiceImpl extends AbstractObservableService
     private Map<Medium, Verleihkarte> _verleihkarten;
 
     /**
+     * Diese Map speichert für jedes Medium die Liste der Kunden, 
+     * die dieses Medium vorgemerkt haben.
+     */
+    private Map<Medium, List<Kunde>> _vormerkungen;
+
+    /**
      * Der Medienbestand.
      */
     private MedienbestandService _medienbestand;
@@ -64,6 +70,7 @@ public class VerleihServiceImpl extends AbstractObservableService
         assert medienbestand != null : "Vorbedingung verletzt: medienbestand  != null";
         assert initialBestand != null : "Vorbedingung verletzt: initialBestand  != null";
         _verleihkarten = erzeugeVerleihkartenBestand(initialBestand);
+        _vormerkungen = new HashMap<Medium, List<Kunde>>();
         _kundenstamm = kundenstamm;
         _medienbestand = medienbestand;
         _protokollierer = new VerleihProtokollierer();
@@ -108,6 +115,21 @@ public class VerleihServiceImpl extends AbstractObservableService
         if (!sindAlleNichtVerliehen(medien))
         {
             return false;
+        }
+
+        for (Medium medium : medien)
+        {
+            List<Kunde> vormerker = getVormerker(medium);
+
+            // Wenn es für dieses Medium Vormerker gibt, darf nur der erste auf der Liste ausleihen.
+            if (!vormerker.isEmpty())
+            {
+                Kunde ersterVormerker = vormerker.get(0);
+                if (!ersterVormerker.equals(kunde))
+                {
+                    return false;
+                }
+            }
         }
 
         return true;
@@ -215,6 +237,15 @@ public class VerleihServiceImpl extends AbstractObservableService
             _verleihkarten.put(medium, verleihkarte);
             _protokollierer.protokolliere(
                     VerleihProtokollierer.EREIGNIS_AUSLEIHE, verleihkarte);
+
+            // NEU: Wenn das Medium für diesen Kunden vorgemerkt war, 
+            // entfernen wir ihn jetzt aus der Vormerkliste (Nachrücken).
+            List<Kunde> vormerker = _vormerkungen.get(medium);
+            if (vormerker != null && !vormerker.isEmpty() && vormerker.get(0)
+                .equals(kunde))
+            {
+                vormerker.remove(0); // Der erste Vormerker rückt ab, alle anderen rutschen nach vorn
+            }
         }
 
         // Was passiert wenn das Protokollieren mitten in der Schleife
@@ -302,4 +333,46 @@ public class VerleihServiceImpl extends AbstractObservableService
         }
         return result;
     }
+
+    @Override
+    public List<Kunde> getVormerker(Medium medium)
+    {
+        assert mediumImBestand(
+                medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
+
+        List<Kunde> vormerker = _vormerkungen.get(medium);
+
+        // Falls noch keine Vormerkungen für das Medium existieren, 
+        // leere Liste zurückgeben.
+        if (vormerker == null)
+        {
+            return new ArrayList<Kunde>();
+        }
+
+        return new ArrayList<Kunde>(vormerker);
+    }
+
+    @Override
+    public void merkeVor(Kunde kunde, Medium medium)
+    {
+        assert mediumImBestand(
+                medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
+        assert kundeImBestand(
+                kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
+
+        List<Kunde> vormerker = _vormerkungen.get(medium);
+
+        if (vormerker == null)
+        {
+            vormerker = new ArrayList<Kunde>();
+            _vormerkungen.put(medium, vormerker);
+        }
+
+        vormerker.add(kunde);
+
+        // 4. Benachrichtige die UI-Komponenten über die Änderung
+        informiereUeberAenderung();
+
+    }
+
 }
