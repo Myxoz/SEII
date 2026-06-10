@@ -222,19 +222,11 @@ public class VormerkWerkzeug
 
         for (Medium medium : medien)
         {
-            if (_verleihService.istVerliehenAn(kunde, medium))
-            {
-                return false;
-            }
-
-            List<Kunde> vormerker = _verleihService.getVormerker(medium);
-
-            if (vormerker.size() >= 3)
-            {
-                return false;
-            }
-
-            if (vormerker.contains(kunde))
+            if (
+            	_verleihService.istVerliehenAn(kunde, medium) ||
+            	!_verleihService.istVormerkenMoglich(medium) ||
+            	_verleihService.istVorgemerkt(medium, kunde)
+            )
             {
                 return false;
             }
@@ -261,7 +253,7 @@ public class VormerkWerkzeug
         {
             for (Medium medium : selectedMedien)
             {
-                _verleihService.merkeVor(selectedKunde, medium);
+                _verleihService.merkeVor(medium, selectedKunde);
             }
         }
     }

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import de.uni_hamburg.informatik.swt.se2.mediathek.entitaeten.Kunde;
 import de.uni_hamburg.informatik.swt.se2.mediathek.entitaeten.Verleihkarte;
+import de.uni_hamburg.informatik.swt.se2.mediathek.entitaeten.VormerkKarte;
 import de.uni_hamburg.informatik.swt.se2.mediathek.entitaeten.medien.Medium;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.AbstractObservableService;
 import de.uni_hamburg.informatik.swt.se2.mediathek.services.kundenstamm.KundenstammService;
@@ -34,7 +35,7 @@ public class VerleihServiceImpl extends AbstractObservableService
      * Diese Map speichert für jedes Medium die Liste der Kunden, 
      * die dieses Medium vorgemerkt haben.
      */
-    private Map<Medium, List<Kunde>> _vormerkungen;
+    private Map<Medium, VormerkKarte> _vormerkungen;
 
     /**
      * Der Medienbestand.
@@ -70,7 +71,7 @@ public class VerleihServiceImpl extends AbstractObservableService
         assert medienbestand != null : "Vorbedingung verletzt: medienbestand  != null";
         assert initialBestand != null : "Vorbedingung verletzt: initialBestand  != null";
         _verleihkarten = erzeugeVerleihkartenBestand(initialBestand);
-        _vormerkungen = new HashMap<Medium, List<Kunde>>();
+        _vormerkungen = new HashMap<Medium, VormerkKarte>();
         _kundenstamm = kundenstamm;
         _medienbestand = medienbestand;
         _protokollierer = new VerleihProtokollierer();
@@ -119,16 +120,10 @@ public class VerleihServiceImpl extends AbstractObservableService
 
         for (Medium medium : medien)
         {
-            List<Kunde> vormerker = getVormerker(medium);
-
             // Wenn es für dieses Medium Vormerker gibt, darf nur der erste auf der Liste ausleihen.
-            if (!vormerker.isEmpty())
+            if (!getVormerkKarte(medium).darfVormerken(kunde))
             {
-                Kunde ersterVormerker = vormerker.get(0);
-                if (!ersterVormerker.equals(kunde))
-                {
-                    return false;
-                }
+            	return false;
             }
         }
 
@@ -240,12 +235,7 @@ public class VerleihServiceImpl extends AbstractObservableService
 
             // NEU: Wenn das Medium für diesen Kunden vorgemerkt war, 
             // entfernen wir ihn jetzt aus der Vormerkliste (Nachrücken).
-            List<Kunde> vormerker = _vormerkungen.get(medium);
-            if (vormerker != null && !vormerker.isEmpty() && vormerker.get(0)
-                .equals(kunde))
-            {
-                vormerker.remove(0); // Der erste Vormerker rückt ab, alle anderen rutschen nach vorn
-            }
+            getVormerkKarte(medium).entferneKunden(kunde);
         }
 
         // Was passiert wenn das Protokollieren mitten in der Schleife
@@ -333,46 +323,48 @@ public class VerleihServiceImpl extends AbstractObservableService
         }
         return result;
     }
+    
+    private VormerkKarte getVormerkKarte(Medium medium) {
+    	return _vormerkungen.computeIfAbsent(medium, l -> new VormerkKarte());
 
-    @Override
-    public List<Kunde> getVormerker(Medium medium)
-    {
-        assert mediumImBestand(
-                medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
-
-        List<Kunde> vormerker = _vormerkungen.get(medium);
-
-        // Falls noch keine Vormerkungen für das Medium existieren, 
-        // leere Liste zurückgeben.
-        if (vormerker == null)
-        {
-            return new ArrayList<Kunde>();
-        }
-
-        return new ArrayList<Kunde>(vormerker);
     }
 
-    @Override
-    public void merkeVor(Kunde kunde, Medium medium)
-    {
-        assert mediumImBestand(
-                medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
-        assert kundeImBestand(
-                kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
+	@Override
+	public boolean istVorgemerkt(Medium medium, Kunde kunde) {
+        assert mediumImBestand(medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
+        assert kundeImBestand(kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
 
-        List<Kunde> vormerker = _vormerkungen.get(medium);
+        return getVormerkKarte(medium).istVorgemerkt(kunde);
+	}
 
-        if (vormerker == null)
-        {
-            vormerker = new ArrayList<Kunde>();
-            _vormerkungen.put(medium, vormerker);
-        }
+	@Override
+	public boolean merkeVor(Medium medium, Kunde kunde) {
+        assert mediumImBestand(medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
+        assert kundeImBestand(kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
 
-        vormerker.add(kunde);
+        boolean succ = getVormerkKarte(medium).merkeVor(kunde);
 
         // 4. Benachrichtige die UI-Komponenten über die Änderung
-        informiereUeberAenderung();
+        if(succ) informiereUeberAenderung();
 
-    }
+		return succ;
+	}
+
+	@Override
+	public boolean istVormerkenMoglich(Medium medium) {
+        assert mediumImBestand(medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
+
+        return getVormerkKarte(medium).istVormerkenMöglich();
+	}
+
+	@Override
+	public boolean enferneVormerkung(Medium medium, Kunde kunde) {
+        assert mediumImBestand(medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
+        assert kundeImBestand(kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
+
+        boolean succ = getVormerkKarte(medium).entferneKunden(kunde);
+        if(succ) informiereUeberAenderung();
+        return succ;
+	}
 
 }

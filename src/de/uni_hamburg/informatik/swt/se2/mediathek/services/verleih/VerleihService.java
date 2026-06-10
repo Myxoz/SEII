@@ -228,27 +228,56 @@ public interface VerleihService extends ObservableService
      */
     Verleihkarte getVerleihkarteFuer(Medium medium);
 
+    // Vormerkdinge
+
     /**
-     * Liefert eine Liste der Kunden, die das Medium vorgemerkt haben, 
-     * in der Reihenfolge ihrer Vormerkung.
+     * Prüft ob ein Kunde ein Medium vorgemerkt hat.
      * 
-     * @param medium Das Medium, dessen Vormerker gesucht werden.
-     * @return Eine Liste von Kunden. Die Liste ist leer, wenn keine Vormerkungen vorliegen.
+     * @param medium Das Medium, bei dem geprüft werden soll, ob es vorgemerkt ist.
+     * @param kunde Der Kunde der geprüft werden soll
+     * 
+     * @return Ob das Medium vorgemerkt ist.
      * 
      * @require medium != null
-     * @ensure result != null
+     * @require kunde != null
      */
-    List<Kunde> getVormerker(Medium medium);
+    boolean istVorgemerkt(Medium medium, Kunde kunde);
 
     /**
      * Merkt ein Medium für einen Kunden vor.
      * 
-     * @param kunde Der Kunde, der das Medium vormerken möchte.
      * @param medium Das vorzumerkende Medium.
+     * @param kunde Der Kunde, der das Medium vormerken möchte.
      * 
+     * @return Ob die Operation erfolgreich war
+     * 
+     * @require medium != null
      * @require kunde != null
+     */
+    boolean merkeVor(Medium medium, Kunde kunde);
+
+    /**
+     * Prüft ob das vormerken für ein Medium möglich ist.
+     * 
+     * @param medium Das zu prüfende Medium
+     * 
+     * @return Ob das Vormerken für dieses Medium möglich ist
+     * 
      * @require medium != null
      */
-    void merkeVor(Kunde kunde, Medium medium);
+    boolean istVormerkenMoglich(Medium medium);
+
+    /**
+     * Entfernt eine Vormerkung für eine Person 
+     * 
+     * @param medium Das Medium für die die Vormerkung entfernt werden soll
+     * @param kunde Der Kunde für die die Vormerkung entfernt werden soll
+     * 
+     * @return Ob die Operation erfolgreich war
+     * 
+     * @require medium != null
+     * @require kunde != null
+     */
+    boolean enferneVormerkung(Medium medium, Kunde kunde);
 
 }
