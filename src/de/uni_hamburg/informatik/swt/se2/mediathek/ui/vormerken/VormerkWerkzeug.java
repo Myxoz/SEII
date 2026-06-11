@@ -214,7 +214,7 @@ public class VormerkWerkzeug
         // der Anforderungen a), b), c) und e) aktiviert.
         // boolean vormerkenMoeglich = (kunde != null) && !medien.isEmpty();
         // return vormerkenMoeglich;
-
+        // Test nach Gitnerv
         if (kunde == null || medien.isEmpty())
         {
             return false;
