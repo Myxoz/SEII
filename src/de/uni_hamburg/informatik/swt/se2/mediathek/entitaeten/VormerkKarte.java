@@ -30,8 +30,8 @@ public class VormerkKarte {
 	}
 
 	public boolean istVorgemerkt(Kunde kunde) {
-		for(int i = 0; i < 3; i++) {
-			if(kunde.equals(_vorgemerkte[i])) {
+		for(Kunde k: _vorgemerkte) {
+			if(kunde.equals(k)) {
 				return true;
 			}
 		}
