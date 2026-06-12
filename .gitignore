@@ -1,3 +1,4 @@
 verleihProtokoll.txt
 bin/
 .settings/
+.DS_Store
