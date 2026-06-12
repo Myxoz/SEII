@@ -214,7 +214,6 @@ public class VormerkWerkzeug
         // der Anforderungen a), b), c) und e) aktiviert.
         // boolean vormerkenMoeglich = (kunde != null) && !medien.isEmpty();
         // return vormerkenMoeglich;
-        // Test nach Gitnerv
         if (kunde == null || medien.isEmpty())
         {
             return false;
@@ -222,11 +221,9 @@ public class VormerkWerkzeug
 
         for (Medium medium : medien)
         {
-            if (
-            	_verleihService.istVerliehenAn(kunde, medium) ||
-            	!_verleihService.istVormerkenMoglich(medium) ||
-            	_verleihService.istVorgemerkt(medium, kunde)
-            )
+            if (_verleihService.istVerliehenAn(kunde, medium)
+                    || !_verleihService.istVormerkenMoglich(medium)
+                    || _verleihService.istVorgemerkt(medium, kunde))
             {
                 return false;
             }
