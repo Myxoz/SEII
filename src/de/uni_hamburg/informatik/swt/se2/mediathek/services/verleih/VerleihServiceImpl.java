@@ -121,9 +121,9 @@ public class VerleihServiceImpl extends AbstractObservableService
         for (Medium medium : medien)
         {
             // Wenn es für dieses Medium Vormerker gibt, darf nur der erste auf der Liste ausleihen.
-            if (!getVormerkKarte(medium).darfVormerken(kunde))
+            if (!getVormerkKarte(medium).darfAusleihen(kunde))
             {
-            	return false;
+                return false;
             }
         }
 
@@ -323,48 +323,60 @@ public class VerleihServiceImpl extends AbstractObservableService
         }
         return result;
     }
-    
-    private VormerkKarte getVormerkKarte(Medium medium) {
-    	return _vormerkungen.computeIfAbsent(medium, l -> new VormerkKarte());
+
+    private VormerkKarte getVormerkKarte(Medium medium)
+    {
+        return _vormerkungen.computeIfAbsent(medium, l -> new VormerkKarte());
 
     }
 
-	@Override
-	public boolean istVorgemerkt(Medium medium, Kunde kunde) {
-        assert mediumImBestand(medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
-        assert kundeImBestand(kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
+    @Override
+    public boolean istVorgemerkt(Medium medium, Kunde kunde)
+    {
+        assert mediumImBestand(
+                medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
+        assert kundeImBestand(
+                kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
 
         return getVormerkKarte(medium).istVorgemerkt(kunde);
-	}
+    }
 
-	@Override
-	public boolean merkeVor(Medium medium, Kunde kunde) {
-        assert mediumImBestand(medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
-        assert kundeImBestand(kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
+    @Override
+    public boolean merkeVor(Medium medium, Kunde kunde)
+    {
+        assert mediumImBestand(
+                medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
+        assert kundeImBestand(
+                kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
 
         boolean succ = getVormerkKarte(medium).merkeVor(kunde);
 
         // 4. Benachrichtige die UI-Komponenten über die Änderung
-        if(succ) informiereUeberAenderung();
+        if (succ) informiereUeberAenderung();
 
-		return succ;
-	}
+        return succ;
+    }
 
-	@Override
-	public boolean istVormerkenMoglich(Medium medium) {
-        assert mediumImBestand(medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
+    @Override
+    public boolean istVormerkenMoglich(Medium medium)
+    {
+        assert mediumImBestand(
+                medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
 
         return getVormerkKarte(medium).istVormerkenMöglich();
-	}
+    }
 
-	@Override
-	public boolean enferneVormerkung(Medium medium, Kunde kunde) {
-        assert mediumImBestand(medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
-        assert kundeImBestand(kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
+    @Override
+    public boolean enferneVormerkung(Medium medium, Kunde kunde)
+    {
+        assert mediumImBestand(
+                medium) : "Vorbedingung verletzt: mediumImBestand(medium)";
+        assert kundeImBestand(
+                kunde) : "Vorbedingung verletzt: kundeImBestand(kunde)";
 
         boolean succ = getVormerkKarte(medium).entferneKunden(kunde);
-        if(succ) informiereUeberAenderung();
+        if (succ) informiereUeberAenderung();
         return succ;
-	}
+    }
 
 }
