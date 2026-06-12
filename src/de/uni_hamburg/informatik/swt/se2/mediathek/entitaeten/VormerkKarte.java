@@ -103,6 +103,7 @@ public class VormerkKarte
      */
     public boolean merkeVor(Kunde kunde)
     {
+    	if(istVorgemerkt(kunde)) return false;
         for (int i = 0; i < 3; i++)
         {
             if (_vorgemerkte[i] == null)
