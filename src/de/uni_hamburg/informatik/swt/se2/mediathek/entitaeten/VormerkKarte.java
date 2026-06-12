@@ -115,4 +115,7 @@ public class VormerkKarte
         }
         return false;
     }
+    public Kunde[] getVorgemerkte() {
+		return _vorgemerkte;
+	}
 }

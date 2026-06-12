@@ -280,4 +280,14 @@ public interface VerleihService extends ObservableService
      */
     boolean enferneVormerkung(Medium medium, Kunde kunde);
 
+    /**
+     * Alle Kunden die etwas vorgemerkt haben.
+     * 
+     * @param medium Das Medium für das alle Vormerker asugegeben werden sollen
+     * 
+     * @return Alle Vormerker
+     * 
+     * @require medium != null
+     */
+    Kunde[] getAllVormerker(Medium medium);
 }

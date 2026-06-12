@@ -378,5 +378,9 @@ public class VerleihServiceImpl extends AbstractObservableService
         if (succ) informiereUeberAenderung();
         return succ;
     }
+    @Override
+    public Kunde[] getAllVormerker(Medium medium) {
+    	return getVormerkKarte(medium).getVorgemerkte();
+    }
 
 }

@@ -212,11 +212,9 @@ public class AusleihWerkzeug
     {
         List<Medium> medien = _medienAuflisterWerkzeug.getSelectedMedien();
         Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde();
-        // TODO für Aufgabenblatt 6 (nicht löschen): So ändern, dass vorgemerkte
-        // Medien nur vom ersten Vormerker ausgeliehen werden können, gemäß
-        // Anforderung c).
         boolean ausleiheMoeglich = (kunde != null) && !medien.isEmpty()
-                && _verleihService.sindAlleNichtVerliehen(medien);
+                && _verleihService.sindAlleNichtVerliehen(medien)
+                && _verleihService.istVerleihenMoeglich(kunde, medien);
 
         return ausleiheMoeglich;
     }

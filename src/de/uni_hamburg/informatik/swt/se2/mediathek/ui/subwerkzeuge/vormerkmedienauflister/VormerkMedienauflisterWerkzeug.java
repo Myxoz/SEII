@@ -79,15 +79,11 @@ public class VormerkMedienauflisterWerkzeug extends ObservableSubWerkzeug
         List<VormerkMedienFormatierer> medienFormatierer = new ArrayList<VormerkMedienFormatierer>();
         for (Medium medium : medienListe)
         {
-            // TODO für Aufgabenblatt 6 (nicht löschen): Die
-            // VormerkMedienFormatierer müssen noch mit einem möglichen
-            // Entleiher und möglichen Vormerkern ausgestattet werden.
-            // Ist dies korrekt implementiert, erscheinen in der Vormerkansicht
-            // die Namen des Entleihers und der möglichen 3 Vormerker.
-            Kunde entleiher = null;
-            Kunde vormerker1 = null;
-            Kunde vormerker2 = null;
-            Kunde vormerker3 = null;
+            Kunde entleiher = _verleihService.getVerleihkarteFuer(medium) == null ? null : _verleihService.getVerleihkarteFuer(medium).getEntleiher();
+            Kunde[] vormerkerKundes = _verleihService.getAllVormerker(medium);
+            Kunde vormerker1 = vormerkerKundes[0];
+            Kunde vormerker2 = vormerkerKundes[1];
+            Kunde vormerker3 = vormerkerKundes[2];
 
             medienFormatierer.add(new VormerkMedienFormatierer(medium,
                     entleiher, vormerker1, vormerker2, vormerker3));
