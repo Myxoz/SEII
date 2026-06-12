@@ -208,7 +208,7 @@ public class VormerkWerkzeug
     {
         List<Medium> medien = _medienAuflisterWerkzeug.getSelectedMedien();
         Kunde kunde = _kundenAuflisterWerkzeug.getSelectedKunde();
-
+        // test
         // TODO für Aufgabenblatt 6 (nicht löschen): Prüfung muss noch eingebaut
         // werden. Ist dies korrekt implementiert, wird der Vormerk-Button gemäß
         // der Anforderungen a), b), c) und e) aktiviert.
