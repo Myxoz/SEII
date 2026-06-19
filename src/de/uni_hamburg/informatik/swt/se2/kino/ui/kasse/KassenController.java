@@ -1,8 +1,12 @@
 package de.uni_hamburg.informatik.swt.se2.kino.ui.kasse;
 
+import javax.print.attribute.SetOfIntegerSyntax;
+
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Kino;
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Tagesplan;
 import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Vorstellung;
+import de.uni_hamburg.informatik.swt.se2.kino.ui.Beobachtbar;
+import de.uni_hamburg.informatik.swt.se2.kino.ui.Beobachter;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.datumsauswaehler.DatumAuswaehlController;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.platzverkauf.PlatzVerkaufsController;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.vorstellungsauswaehler.VorstellungsAuswaehlController;
@@ -16,7 +20,7 @@ import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Datum;
  * @author SE2-Team
  * @version SoSe 2024
  */
-public class KassenController
+public class KassenController implements Beobachter
 {
     // Die Entität, die durch dieses UI-Modul verwaltet wird.
     private Kino _kino;
@@ -45,7 +49,9 @@ public class KassenController
         // Submodule erstellen
         _platzVerkaufsController = new PlatzVerkaufsController();
         _datumAuswaehlController = new DatumAuswaehlController();
+        _datumAuswaehlController.fuegeBeobachterHinzu(this);
         _vorstellungAuswaehlController = new VorstellungsAuswaehlController();
+        _vorstellungAuswaehlController.fuegeBeobachterHinzu(this);
 
         // View erstellen (mit eingebetteten Views der direkten Submodule)
         _view = new KassenView(_platzVerkaufsController.getUIPanel(),
@@ -109,4 +115,30 @@ public class KassenController
     {
         return _vorstellungAuswaehlController.getAusgewaehlteVorstellung();
     }
+
+    /**
+     * Benachrichtigt die jeweiligen Controller über Aenderungen
+     * 
+     * @param beobachtbar Der Controller, von dem die Aenderung kommt
+     */
+	@Override
+	public void beachteAenderung(Beobachtbar beobachtbar) {
+		switch (beobachtbar) 
+		{
+			case DatumAuswaehlController datumAuswaehlController: 
+			{
+				setzeTagesplanFuerAusgewaehltesDatum();
+				break;
+			}
+			case VorstellungsAuswaehlController vorstellungsAuswaehlController: 
+			{
+				setzeAusgewaehlteVorstellung();
+				break;
+			}
+			default: 
+			{
+				throw new IllegalStateException("Der Beobachter "+beobachtbar+" wird nicht unterstützt");
+			}
+		};
+	}
 }
