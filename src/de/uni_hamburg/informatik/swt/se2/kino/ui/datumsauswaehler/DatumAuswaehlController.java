@@ -1,9 +1,9 @@
 package de.uni_hamburg.informatik.swt.se2.kino.ui.datumsauswaehler;
 
-import javax.swing.JPanel;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Datum;
+import de.uni_hamburg.informatik.swt.se2.kino.ui.ObservableSubmodul;
 
-import de.uni_hamburg.informatik.swt.se2.kino.ui.Beobachtbar;
-import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Datum;
+import javax.swing.JPanel;
 
 /**
  * Mit diesem UI-Modul kann ein Datum ausgewählt werden.
@@ -14,7 +14,7 @@ import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Datum;
  * @author SE2-Team
  * @version SoSe 2024
  */
-public class DatumAuswaehlController extends Beobachtbar
+public class DatumAuswaehlController extends ObservableSubmodul
 {
     private DatumAuswaehlView _view;
     private Datum _ausgewaehltesDatum;
@@ -39,7 +39,7 @@ public class DatumAuswaehlController extends Beobachtbar
         _ausgewaehltesDatum = _ausgewaehltesDatum.vorherigerTag();
         _view.getDatumLabel()
                 .setText(_ausgewaehltesDatum.getFormatiertenString());
-        meldeAenderung();
+        informiereUeberAenderung();
     }
 
     /**
@@ -50,11 +50,11 @@ public class DatumAuswaehlController extends Beobachtbar
         _ausgewaehltesDatum = _ausgewaehltesDatum.naechsterTag();
         _view.getDatumLabel()
                 .setText(_ausgewaehltesDatum.getFormatiertenString());
-        meldeAenderung();
+        informiereUeberAenderung();
     }
 
     /**
-     * Gibt das Panel dieses UI-Moduls zurück. Das Panel sollte von einem
+     * Gibt das Panel dieses Submoduls zurück. Das Panel sollte von einem
      * Supermodul eingebettet werden.
      * 
      * @ensure result != null

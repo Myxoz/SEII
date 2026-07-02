@@ -1,31 +1,27 @@
 package de.uni_hamburg.informatik.swt.se2.kino.ui.kasse;
 
-import javax.print.attribute.SetOfIntegerSyntax;
-
-import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Kino;
-import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Tagesplan;
-import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Vorstellung;
-import de.uni_hamburg.informatik.swt.se2.kino.ui.Beobachtbar;
-import de.uni_hamburg.informatik.swt.se2.kino.ui.Beobachter;
+import de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten.Kino;
+import de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten.Tagesplan;
+import de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten.Vorstellung;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Datum;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.datumsauswaehler.DatumAuswaehlController;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.platzverkauf.PlatzVerkaufsController;
 import de.uni_hamburg.informatik.swt.se2.kino.ui.vorstellungsauswaehler.VorstellungsAuswaehlController;
-import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Datum;
 
 /**
- * Das Kassenmodul. Mit diesem Modul kann die Benutzerin oder der Benutzer
+ * Das Kassenmodul. Mit diesem UI-Modul kann die Benutzerin oder der Benutzer
  * eine Vorstellung auswählen und Karten für diese Vorstellung verkaufen und
  * stornieren.
  * 
  * @author SE2-Team
  * @version SoSe 2024
  */
-public class KassenController implements Beobachter
+public class KassenController
 {
     // Die Entität, die durch dieses UI-Modul verwaltet wird.
     private Kino _kino;
 
-    // View dieses UI-Moduls
+    // View dieses Moduls
     private KassenView _view;
 
     // Die Submodule
@@ -49,11 +45,11 @@ public class KassenController implements Beobachter
         // Submodule erstellen
         _platzVerkaufsController = new PlatzVerkaufsController();
         _datumAuswaehlController = new DatumAuswaehlController();
-        _datumAuswaehlController.fuegeBeobachterHinzu(this);
         _vorstellungAuswaehlController = new VorstellungsAuswaehlController();
-        _vorstellungAuswaehlController.fuegeBeobachterHinzu(this);
 
-        // View erstellen (mit eingebetteten Views der direkten Submodule)
+        erzeugeListenerFuerSubmodule();
+
+        // UI erstellen (mit eingebetteten UIs der direkten Submodule)
         _view = new KassenView(_platzVerkaufsController.getUIPanel(),
                 _datumAuswaehlController.getUIPanel(),
                 _vorstellungAuswaehlController.getUIPanel());
@@ -63,6 +59,17 @@ public class KassenController implements Beobachter
         setzeAusgewaehlteVorstellung();
 
         _view.zeigeFenster();
+    }
+
+    /**
+     * Erzeugt und registriert die Beobachter, die die Submodule beobachten.
+     */
+    private void erzeugeListenerFuerSubmodule()
+    {
+        _datumAuswaehlController.registriereBeobachter(this::setzeTagesplanFuerAusgewaehltesDatum);
+
+        _vorstellungAuswaehlController
+                .registriereBeobachter(this::setzeAusgewaehlteVorstellung);
     }
 
     /**
@@ -115,30 +122,4 @@ public class KassenController implements Beobachter
     {
         return _vorstellungAuswaehlController.getAusgewaehlteVorstellung();
     }
-
-    /**
-     * Benachrichtigt die jeweiligen Controller über Aenderungen
-     * 
-     * @param beobachtbar Der Controller, von dem die Aenderung kommt
-     */
-	@Override
-	public void beachteAenderung(Beobachtbar beobachtbar) {
-		switch (beobachtbar) 
-		{
-			case DatumAuswaehlController datumAuswaehlController: 
-			{
-				setzeTagesplanFuerAusgewaehltesDatum();
-				break;
-			}
-			case VorstellungsAuswaehlController vorstellungsAuswaehlController: 
-			{
-				setzeAusgewaehlteVorstellung();
-				break;
-			}
-			default: 
-			{
-				throw new IllegalStateException("Der Beobachter "+beobachtbar+" wird nicht unterstützt");
-			}
-		};
-	}
 }

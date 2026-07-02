@@ -1,4 +1,4 @@
-package de.uni_hamburg.informatik.swt.se2.kino.wertobjekte;
+package de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte;
 
 /**
  * Die Altersfreigaben der FSK.

@@ -3,7 +3,7 @@ package de.uni_hamburg.informatik.swt.se2.kino.ui.platzverkauf;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Platz;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Platz;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -20,7 +20,7 @@ import java.util.Set;
  * Widget, das die Plätze in einem Kinosaal grafisch darstellt und es
  * ermöglicht, Plätze für den Verkauf auszuwählen.
  * 
- * Hierfür wurde ein eigenes Widget entwickelt, damit das UI-Modul nur einen
+ * Hierfür wurde ein eigenes Widget entwickelt, damit das Modul nur einen
  * Listener für ein spezielles Auswahl-Event registrieren muss, statt an jedem
  * einzelnen Button einen ActionListener registrieren zu müssen. Dieses Widget
  * kapselt also die Abbildung der Events der einzelnen Buttons auf ein
@@ -31,7 +31,7 @@ import java.util.Set;
  */
 class JPlatzplan extends JComponent
 {
-    public static final Dimension PLATZBUTTON_GROESSE = new Dimension(22, 22);
+    public static Dimension PLATZBUTTON_GROESSE = new Dimension(22, 22);
 
     private JPlatzButton[][] _buttons;
     private ActionListener _buttonListener;
@@ -84,7 +84,8 @@ class JPlatzplan extends JComponent
      * Fügt einen Listener hinzu, der bei Änderungen der Auswahl benachrichtigt
      * wird.
      * 
-     * @param listener der Listener.
+     * @param listener
+     *            der Listener.
      */
     public void addPlatzSelectionListener(PlatzSelectionListener listener)
     {
@@ -94,7 +95,8 @@ class JPlatzplan extends JComponent
     /**
      * Entfernt einen Listener.
      * 
-     * @param listener der Listener.
+     * @param listener
+     *            der Listener.
      */
     public void removePlatzSelectionListener(PlatzSelectionListener listener)
     {
@@ -104,7 +106,8 @@ class JPlatzplan extends JComponent
     /**
      * Benachrichtigt die SelectionListener, dass sich die Auswahl geändert hat.
      * 
-     * @param ausgewaehltePlaetze die neue Auswahl.
+     * @param ausgewaehltePlaetze
+     *            die neue Auswahl.
      */
     private void informiereSelectionListener(Set<Platz> ausgewaehltePlaetze)
     {
@@ -121,8 +124,10 @@ class JPlatzplan extends JComponent
      * angeboten werden. Achtung, nach dem Aufruf dieser Methode werden zunächst
      * alle Plätze als frei angezeigt!
      * 
-     * @param anzahlReihen die Anzahl der Reihen
-     * @param anzahlSitzeProReihe die Anzahl der Plätze pro Reihe
+     * @param anzahlReihen
+     *            die Anzahl der Reihen
+     * @param anzahlSitzeProReihe
+     *            die Anzahl der Plätze pro Reihe
      * 
      * @require anzahlReihen >= 0
      * @require anzahlSitzeProReihe >= 0
@@ -143,7 +148,7 @@ class JPlatzplan extends JComponent
             imGitterEinfuegen(label, 0, reihe);
             for (int sitz = 0; sitz < anzahlSitzeProReihe; sitz++)
             {
-                JPlatzButton button = new JPlatzButton(new Platz(reihe, sitz));
+                JPlatzButton button = new JPlatzButton(Platz.get(reihe, sitz));
                 button.setMinimumSize(PLATZBUTTON_GROESSE);
                 button.setPreferredSize(PLATZBUTTON_GROESSE);
                 imGitterEinfuegen(button, sitz + 1, reihe);
@@ -162,9 +167,12 @@ class JPlatzplan extends JComponent
     /**
      * Fügt ein GUI-Element in das Darstellungsgitter ein.
      * 
-     * @param component Das GUI-Element, das eingefügt werden soll.
-     * @param gridx x-Position im Gitter.
-     * @param gridy y-Position im Gitter.
+     * @param component
+     *            Das GUI-Element, das eingefügt werden soll.
+     * @param gridx
+     *            x-Position im Gitter.
+     * @param gridy
+     *            y-Position im Gitter.
      */
     private void imGitterEinfuegen(Component component, int gridx, int gridy)
     {
@@ -199,7 +207,8 @@ class JPlatzplan extends JComponent
     /**
      * Markiert den angegebenen Platz als verkauft.
      * 
-     * @param platz der Platz.
+     * @param platz
+     *            der Platz.
      * 
      * @require platz != null
      */
@@ -213,7 +222,8 @@ class JPlatzplan extends JComponent
     /**
      * Markiert den angegebenen Platz als frei.
      * 
-     * @param platz der Platz.
+     * @param platz
+     *            der Platz.
      * 
      * @require platz != null
      */

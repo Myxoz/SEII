@@ -4,7 +4,7 @@ import javax.swing.JButton;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
-import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Platz;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Platz;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -39,7 +39,8 @@ class JPlatzButton extends JButton
      * Erzeugt einen neuen Button. Der Button wird mit der Nummer des Sitzes in
      * seiner Sitzreihe beschriftet.
      * 
-     * @param platz der Platz, auf den sich dieser Button bezieht.
+     * @param platz
+     *            der Platz, auf den sich dieser Button bezieht.
      * 
      * @require platz != null
      */
@@ -143,7 +144,8 @@ class JPlatzButton extends JButton
      * frei. Nach Aufruf dieser Methode wird der Button nicht mehr als
      * ausgewählt angezeigt.
      * 
-     * @param verkauft <code>true</code>, wenn der Sitzplatz als verkauft
+     * @param verkauft
+     *            <code>true</code>, wenn der Sitzplatz als verkauft
      *            gekennzeichnet werden soll, <code>false</code>, wenn er als
      *            frei angezeigt werden soll.
      */
@@ -156,8 +158,9 @@ class JPlatzButton extends JButton
     /**
      * Zeigt diesen Button als ausgewählt oder nicht ausgewählt an.
      * 
-     * @param ausgewaehlt <code>true</code>, wenn der Button als ausgewählt
-     *            angezeigt werden soll, <code>false</code> sonst.
+     * @param ausgewaehlt
+     *            <code>true</code>, wenn der Button als ausgewählt angezeigt
+     *            werden soll, <code>false</code> sonst.
      */
     public void setAusgewaehlt(boolean ausgewaehlt)
     {

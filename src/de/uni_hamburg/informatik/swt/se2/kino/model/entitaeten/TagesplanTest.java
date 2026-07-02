@@ -1,24 +1,24 @@
-package de.uni_hamburg.informatik.swt.se2.kino.entitaeten;
+package de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Datum;
-import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.FSK;
-import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Uhrzeit;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Datum;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.FSK;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Uhrzeit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TagesplanTest
 {
-    private static final Datum _datum = new Datum(1, 1, 2021);
+    private static final Datum _datum = Datum.get(1, 1, 2021);
     private static final Film _film = new Film("", 1, FSK.FSK0, false);
     private static final Kinosaal _kinosaal = new Kinosaal("Saal 1", 1, 1);
     private static final Kinosaal _kinosaal2 = new Kinosaal("Saal 2", 1, 1);
-    private static final Uhrzeit _startzeit = new Uhrzeit(0, 0);
-    private static final Uhrzeit _startzeit2 = new Uhrzeit(0, 1);
-    private static final Uhrzeit _endzeit = new Uhrzeit(1, 1);
+    private static final Uhrzeit _startzeit = Uhrzeit.get(0, 0);
+    private static final Uhrzeit _startzeit2 = Uhrzeit.get(0, 1);
+    private static final Uhrzeit _endzeit = Uhrzeit.get(1, 1);
     private static final Vorstellung _vorstellung = new Vorstellung(_kinosaal,
             _film, _startzeit, _endzeit, _datum, 0);
     private static final Vorstellung _vorstellung2 = new Vorstellung(_kinosaal,

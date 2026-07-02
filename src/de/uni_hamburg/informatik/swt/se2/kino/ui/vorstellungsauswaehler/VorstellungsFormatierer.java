@@ -1,6 +1,6 @@
 package de.uni_hamburg.informatik.swt.se2.kino.ui.vorstellungsauswaehler;
 
-import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Vorstellung;
+import de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten.Vorstellung;
 
 /**
  * Formatierer für eine {@link Vorstellung}.
@@ -15,8 +15,8 @@ class VorstellungsFormatierer
     /**
      * Initialisiert einen Formatierer für die angegebene Vorstellung.
      * 
-     * @param vorstellung die Vorstellung, die von diesem Formatierer
-     *            dargestellt wird.
+     * @param vorstellung
+     *            die Vorstellung, die von diesem Formatierer dargestellt wird.
      */
     public VorstellungsFormatierer(Vorstellung vorstellung)
     {

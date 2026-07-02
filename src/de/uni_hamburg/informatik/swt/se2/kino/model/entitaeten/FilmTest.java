@@ -1,8 +1,8 @@
-package de.uni_hamburg.informatik.swt.se2.kino.entitaeten;
+package de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten;
 
 import org.junit.Test;
 
-import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.FSK;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.FSK;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

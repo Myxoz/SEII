@@ -1,13 +1,10 @@
 package de.uni_hamburg.informatik.swt.se2.kino.ui.vorstellungsauswaehler;
 
+import de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten.Tagesplan;
+import de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten.Vorstellung;
+import de.uni_hamburg.informatik.swt.se2.kino.ui.ObservableSubmodul;
+
 import javax.swing.JPanel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Tagesplan;
-import de.uni_hamburg.informatik.swt.se2.kino.entitaeten.Vorstellung;
-import de.uni_hamburg.informatik.swt.se2.kino.ui.Beobachtbar;
-
 import java.util.List;
 
 /**
@@ -17,12 +14,9 @@ import java.util.List;
  * Dieses UI-Modul ist ein eingebettetes Submodul. Es benachrichtigt seine
  * Beobachter, wenn sich die ausgewählte Vorstellung geändert hat.
  */
-public class VorstellungsAuswaehlController extends Beobachtbar
+public class VorstellungsAuswaehlController extends ObservableSubmodul
 {
     private VorstellungsAuswaehlView _view;
-
-    // Die Entität, die durch dieses UI-Modul verwaltet wird.
-    private Tagesplan _tagesplan;
 
     /**
      * Initialisiert das UI-Modul.
@@ -38,12 +32,12 @@ public class VorstellungsAuswaehlController extends Beobachtbar
      */
     private void vorstellungWurdeAusgewaehlt()
     {
-        meldeAenderung();
+        informiereUeberAenderung();
     }
 
     /**
      * Gibt das Panel dieses Submoduls zurück. Das Panel sollte von einem
-     * Supermodul eingebettet werden.
+     * Supermoduls eingebettet werden.
      * 
      * @ensure result != null
      */
@@ -53,14 +47,16 @@ public class VorstellungsAuswaehlController extends Beobachtbar
     }
 
     /**
-     * Gibt die derzeit ausgewählte Vorstellung zurück. Wenn keine Vorstellung
-     * ausgewählt ist, wird <code>null</code> zurückgegeben.
+     * Gibt die derzeit ausgewählte Vorstellung zurück.
+     * 
+     * @return die derzeitig ausgewählte Vorstellung, oder null, wenn keine
+     *         Vorstellung ausgewählt ist.
      */
     public Vorstellung getAusgewaehlteVorstellung()
     {
         Vorstellung result = null;
-        VorstellungsFormatierer adapter = (VorstellungsFormatierer) _view
-                .getVorstellungAuswahlList().getSelectedValue();
+        VorstellungsFormatierer adapter = _view.getVorstellungAuswahlList()
+                .getSelectedValue();
         if (adapter != null)
         {
             result = adapter.getVorstellung();
@@ -78,8 +74,7 @@ public class VorstellungsAuswaehlController extends Beobachtbar
     {
         assert tagesplan != null : "Vorbedingung verletzt: tagesplan != null";
 
-        _tagesplan = tagesplan;
-        List<Vorstellung> vorstellungen = _tagesplan.getVorstellungen();
+        List<Vorstellung> vorstellungen = tagesplan.getVorstellungen();
         aktualisiereAngezeigteVorstellungsliste(vorstellungen);
     }
 
@@ -107,15 +102,10 @@ public class VorstellungsAuswaehlController extends Beobachtbar
     private void registriereUIAktionen()
     {
         _view.getVorstellungAuswahlList().addListSelectionListener(
-                new ListSelectionListener()
-                {
-                    @Override
-                    public void valueChanged(ListSelectionEvent event)
+                event -> {
+                    if (!event.getValueIsAdjusting())
                     {
-                        if (!event.getValueIsAdjusting())
-                        {
-                            vorstellungWurdeAusgewaehlt();
-                        }
+                        vorstellungWurdeAusgewaehlt();
                     }
                 });
     }

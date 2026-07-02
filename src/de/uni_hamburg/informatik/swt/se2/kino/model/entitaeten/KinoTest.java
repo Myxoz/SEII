@@ -1,12 +1,12 @@
-package de.uni_hamburg.informatik.swt.se2.kino.entitaeten;
+package de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Datum;
-import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.FSK;
-import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Platz;
-import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.Uhrzeit;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Datum;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.FSK;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Platz;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Uhrzeit;
 
 import java.util.Arrays;
 import java.util.List;
@@ -63,12 +63,12 @@ public class KinoTest
         _film1 = new Film(_filmTitel1, 108, FSK.FSK16, false);
         _film2 = new Film(_filmTitel2, 135, FSK.FSK12, true);
 
-        _u1 = new Uhrzeit(17, 30);
-        _u2 = new Uhrzeit(20, 0);
-        _u3 = new Uhrzeit(22, 30);
-        _u4 = new Uhrzeit(1, 30);
+        _u1 = Uhrzeit.get(17, 30);
+        _u2 = Uhrzeit.get(20, 0);
+        _u3 = Uhrzeit.get(22, 30);
+        _u4 = Uhrzeit.get(1, 30);
 
-        _d1 = new Datum(11, 07, 2008);
+        _d1 = Datum.get(11, 07, 2008);
 
         _vorstellungSaal1Film0 = new Vorstellung(_saal1, _film0, _u1, _u2, _d1,
                 900);
@@ -134,10 +134,10 @@ public class KinoTest
     @Test
     public void testeHatPlatz()
     {
-        assertTrue(_saal0.hatPlatz(new Platz(0, 0)));
-        assertTrue(_saal0.hatPlatz(new Platz(24, 39)));
-        assertFalse(_saal0.hatPlatz(new Platz(0, 40)));
-        assertFalse(_saal0.hatPlatz(new Platz(25, 0)));
-        assertFalse(_saal0.hatPlatz(new Platz(25, 40)));
+        assertTrue(_saal0.hatPlatz(Platz.get(0, 0)));
+        assertTrue(_saal0.hatPlatz(Platz.get(24, 39)));
+        assertFalse(_saal0.hatPlatz(Platz.get(0, 40)));
+        assertFalse(_saal0.hatPlatz(Platz.get(25, 0)));
+        assertFalse(_saal0.hatPlatz(Platz.get(25, 40)));
     }
 }

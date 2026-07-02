@@ -1,6 +1,6 @@
-package de.uni_hamburg.informatik.swt.se2.kino.entitaeten;
+package de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten;
 
-import de.uni_hamburg.informatik.swt.se2.kino.wertobjekte.FSK;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.FSK;
 
 /**
  * Ein Film. Ein Film besteht aus einem Titel, einer Länge in Minuten, einer
@@ -19,10 +19,14 @@ public class Film
     /**
      * Initialisiert einen neuen Film.
      * 
-     * @param titel der Titel.
-     * @param laenge die Laenge in Minuten.
-     * @param fsk die Altersfreigabe fuer diesen Film.
-     * @param ueberlaenge hat der Film Überlaenge?
+     * @param titel
+     *            der Titel.
+     * @param laenge
+     *            die Laenge in Minuten.
+     * @param fsk
+     *            die Altersfreigabe fuer diesen Film.
+     * @param ueberlaenge
+     *            hat der Film Überlaenge?
      * 
      * @require titel != null
      * @require laenge > 0

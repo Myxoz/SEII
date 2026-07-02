@@ -27,18 +27,20 @@ class KassenView
      * http://tango.freedesktop.org/
      */
 
+    private static final String TITEL = "SE2-Kinokartenverkauf SoSe 2025";
+
     // Die Widgets, aus denen das UI sich zusammensetzt
     private JFrame _frame;
     private JButton _beendenButton;
 
     /**
-     * Initialisert die Oberfläche. Die Parameter sind die Views der Submodule,
+     * Initialisert die Oberfläche. Die Parameter sind die UIs der Submodule,
      * die eingebettet werden.
      */
     public KassenView(JPanel platzVerkaufsPanel,
             JPanel datumAuswaehlPanel, JPanel vorstellungAuswaehlPanel)
     {
-        _frame = new JFrame("SE2-Kinokartenverkauf Vorlage Blatt 07 SoSe 2021");
+        _frame = new JFrame(TITEL);
         _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _frame.getContentPane().setLayout(new BorderLayout());
 
@@ -102,9 +104,7 @@ class KassenView
     private JPanel erstelleUeberschriftPanel()
     {
         JPanel topPanel = new JPanel();
-        JLabel label = new JLabel(
-                "SE2-Kinokartenverkauf Vorlage Blatt 07 SoSe 2021",
-                SwingConstants.CENTER);
+        JLabel label = new JLabel(TITEL, SwingConstants.CENTER);
 
         Font font = label.getFont().deriveFont(Font.BOLD + Font.ITALIC, 20);
         label.setFont(font);
