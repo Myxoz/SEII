@@ -3,8 +3,6 @@ package de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Datum;
 import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.FSK;
 import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Geldbetrag;
