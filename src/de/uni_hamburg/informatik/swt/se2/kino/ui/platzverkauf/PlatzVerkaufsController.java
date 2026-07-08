@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten.Kinosaal;
 import de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten.Vorstellung;
+import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Geldbetrag;
 import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Platz;
 
 import java.util.List;
@@ -92,15 +93,15 @@ public class PlatzVerkaufsController
     {
         if (istVerkaufenMoeglich(plaetze))
         {
-            int preis = _vorstellung.getPreisFuerPlaetze(plaetze);
+            Geldbetrag preis = _vorstellung.getPreisFuerPlaetze(plaetze);
             _view.getPreisLabel().setText(
-                    "Gesamtpreis: " + preis + " Eurocent");
+                    "Gesamtpreis: " + preis.toString() + " Eurocent");
         }
         else if (istStornierenMoeglich(plaetze))
         {
-            int preis = _vorstellung.getPreisFuerPlaetze(plaetze);
+            Geldbetrag preis = _vorstellung.getPreisFuerPlaetze(plaetze);
             _view.getPreisLabel().setText(
-                    "Gesamtstorno: " + preis + " Eurocent");
+                    "Gesamtstorno: " + preis.toString() + " Eurocent");
         }
         else if (!plaetze.isEmpty())
         {
