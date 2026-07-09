@@ -1,14 +1,14 @@
 package de.uni_hamburg.informatik.swt.se2.kino.ui.platzverkauf;
 
+import java.util.List;
+import java.util.Set;
+
 import javax.swing.JPanel;
 
 import de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten.Kinosaal;
 import de.uni_hamburg.informatik.swt.se2.kino.model.entitaeten.Vorstellung;
 import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Geldbetrag;
 import de.uni_hamburg.informatik.swt.se2.kino.model.wertobjekte.Platz;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * Mit diesem UI-Modul können Plätze verkauft und storniert werden. Es arbeitet
@@ -56,13 +56,15 @@ public class PlatzVerkaufsController
      */
     private void registriereUIAktionen()
     {
-        _view.getVerkaufenButton().addActionListener(e -> fuehreBarzahlungDurch());
+        _view.getVerkaufenButton()
+            .addActionListener(e -> fuehreBarzahlungDurch());
 
-        _view.getStornierenButton().addActionListener(e -> stornierePlaetze(_vorstellung));
+        _view.getStornierenButton()
+            .addActionListener(e -> stornierePlaetze(_vorstellung));
 
-        _view.getPlatzplan().addPlatzSelectionListener(
-                event -> reagiereAufNeuePlatzAuswahl(event
-                        .getAusgewaehltePlaetze()));
+        _view.getPlatzplan()
+            .addPlatzSelectionListener(event -> reagiereAufNeuePlatzAuswahl(
+                    event.getAusgewaehltePlaetze()));
     }
 
     /**
@@ -81,8 +83,10 @@ public class PlatzVerkaufsController
      */
     private void reagiereAufNeuePlatzAuswahl(Set<Platz> plaetze)
     {
-        _view.getVerkaufenButton().setEnabled(istVerkaufenMoeglich(plaetze));
-        _view.getStornierenButton().setEnabled(istStornierenMoeglich(plaetze));
+        _view.getVerkaufenButton()
+            .setEnabled(istVerkaufenMoeglich(plaetze));
+        _view.getStornierenButton()
+            .setEnabled(istStornierenMoeglich(plaetze));
         aktualisierePreisanzeige(plaetze);
     }
 
@@ -94,24 +98,24 @@ public class PlatzVerkaufsController
         if (istVerkaufenMoeglich(plaetze))
         {
             Geldbetrag preis = _vorstellung.getPreisFuerPlaetze(plaetze);
-            _view.getPreisLabel().setText(
-                    "Gesamtpreis: " + preis.toString() + " Eurocent");
+            _view.getPreisLabel()
+                .setText("Gesamtpreis: " + preis.toString() + " Eurocent");
         }
         else if (istStornierenMoeglich(plaetze))
         {
             Geldbetrag preis = _vorstellung.getPreisFuerPlaetze(plaetze);
-            _view.getPreisLabel().setText(
-                    "Gesamtstorno: " + preis.toString() + " Eurocent");
+            _view.getPreisLabel()
+                .setText("Gesamtstorno: " + preis.toString() + " Eurocent");
         }
         else if (!plaetze.isEmpty())
         {
-            _view.getPreisLabel().setText(
-                    "Verkauf und Storno nicht gleichzeitig möglich!");
+            _view.getPreisLabel()
+                .setText("Verkauf und Storno nicht gleichzeitig möglich!");
         }
         else
         {
-            _view.getPreisLabel().setText(
-                    "Gesamtpreis: 0 Eurocent");
+            _view.getPreisLabel()
+                .setText("Gesamtpreis: 0 Eurocent");
         }
     }
 
@@ -171,7 +175,8 @@ public class PlatzVerkaufsController
      */
     private void initialisierePlatzplan(int reihen, int sitzeProReihe)
     {
-        _view.getPlatzplan().setAnzahlPlaetze(reihen, sitzeProReihe);
+        _view.getPlatzplan()
+            .setAnzahlPlaetze(reihen, sitzeProReihe);
     }
 
     /**
@@ -185,19 +190,34 @@ public class PlatzVerkaufsController
         {
             if (!_vorstellung.istVerkaufbar(platz))
             {
-                _view.getPlatzplan().markierePlatzAlsVerkauft(platz);
+                _view.getPlatzplan()
+                    .markierePlatzAlsVerkauft(platz);
             }
         }
     }
 
     /**
-     * Verkauft die ausgewählten Plaetze.
+     * Angepasst: Verkauft die ausgewählten Plaetze, nachdem die Zahlung erfolgreich durchgeführt wurde.
      */
     private void verkaufePlaetze(Vorstellung vorstellung)
     {
-        Set<Platz> plaetze = _view.getPlatzplan().getAusgewaehltePlaetze();
-        vorstellung.verkaufePlaetze(plaetze);
-        aktualisierePlatzplan();
+        Set<Platz> plaetze = _view.getPlatzplan()
+            .getAusgewaehltePlaetze();
+
+        // Gesamtpreis für die ausgewählten Plätze berechnen
+        Geldbetrag gesamtPreis = vorstellung.getPreisFuerPlaetze(plaetze);
+
+        // Den BezahlController mit dem Preis starten
+        BezahlController bezahlController = new BezahlController(gesamtPreis);
+
+        // Das Fenster öffnen und warten, bis der Nutzer OK oder Abbrechen klickt
+        boolean erfolgreichBezahlt = bezahlController.fuehreZahlungDurch();
+
+        if (erfolgreichBezahlt)
+        {
+            vorstellung.verkaufePlaetze(plaetze);
+            aktualisierePlatzplan();
+        }
     }
 
     /**
@@ -205,7 +225,8 @@ public class PlatzVerkaufsController
      */
     private void stornierePlaetze(Vorstellung vorstellung)
     {
-        Set<Platz> plaetze = _view.getPlatzplan().getAusgewaehltePlaetze();
+        Set<Platz> plaetze = _view.getPlatzplan()
+            .getAusgewaehltePlaetze();
         vorstellung.stornierePlaetze(plaetze);
         aktualisierePlatzplan();
     }
