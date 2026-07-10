@@ -38,7 +38,8 @@ public class Geldbetrag implements Comparable<Geldbetrag>
 	 * @param other Der andere Geldbetrag
 	 * @return Den neuen Geldbetrag
 	 */
-	public Geldbetrag mul(int other) {
+	public Geldbetrag mul(int other) 
+	{
 		assert ((long)_euroCent) * other == _euroCent * other: "Das Multiplizieren mit diesem Faktor ist nicht möglich";
 		return new Geldbetrag(_euroCent * other);
 	}
@@ -49,7 +50,8 @@ public class Geldbetrag implements Comparable<Geldbetrag>
 	 * @param other Der andere Geldbetrag
 	 * @return Den neuen Geldbetrag
 	 */
-	public Geldbetrag add(Geldbetrag other) {
+	public Geldbetrag add(Geldbetrag other) 
+	{
 		assert ((long) _euroCent) + other._euroCent == _euroCent + other._euroCent: "Das addieren dieser Beträge ist nicht möglich";
 		return new Geldbetrag(_euroCent + other._euroCent);
 	}
@@ -59,12 +61,14 @@ public class Geldbetrag implements Comparable<Geldbetrag>
 	 * @param other Der andere Geldbetrag
 	 * @return Den neuen Geldbetrag
 	 */
-	public Geldbetrag sub(Geldbetrag other) {
+	public Geldbetrag sub(Geldbetrag other) 
+	{
 		return add(other.mul(-1));
 	}
 
 	@Override
-	public int compareTo(Geldbetrag o) {
+	public int compareTo(Geldbetrag o) 
+	{
 		return _euroCent - o._euroCent;
 	}
 	
@@ -79,5 +83,4 @@ public class Geldbetrag implements Comparable<Geldbetrag>
 	{
 		return other instanceof Geldbetrag o ? o._euroCent == _euroCent : false;
 	}
-			
 }

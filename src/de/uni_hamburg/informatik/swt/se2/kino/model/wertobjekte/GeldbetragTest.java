@@ -13,7 +13,8 @@ import static org.junit.Assert.assertTrue;
 public class GeldbetragTest {
 
     @Test
-    public void testKonstruktorInt() {
+    public void testKonstruktorInt() 
+    {
         Geldbetrag positiv = new Geldbetrag(100);
         assertEquals("1,00", positiv.toString());
 
@@ -25,7 +26,8 @@ public class GeldbetragTest {
     }
 
     @Test
-    public void testKonstruktorString() {
+    public void testKonstruktorString() 
+    {
         Geldbetrag g1 = new Geldbetrag("10,50");
         assertEquals("10,50", g1.toString());
 
@@ -42,7 +44,8 @@ public class GeldbetragTest {
     }
 
     @Test
-    public void testMul() {
+    public void testMul() 
+    {
         Geldbetrag basis = new Geldbetrag(100); // 1,00 €
         
         Geldbetrag ergebnisPositiv = basis.mul(5);
@@ -60,7 +63,8 @@ public class GeldbetragTest {
     }
 
     @Test
-    public void testAdd() {
+    public void testAdd() 
+    {
         Geldbetrag g1 = new Geldbetrag(150); // 1,50 €
         Geldbetrag g2 = new Geldbetrag(250); // 2,50 €
         
@@ -78,7 +82,8 @@ public class GeldbetragTest {
     }
 
     @Test
-    public void testSub() {
+    public void testSub() 
+    {
         Geldbetrag g1 = new Geldbetrag(500); // 5,00 €
         Geldbetrag g2 = new Geldbetrag(200); // 2,00 €
 
@@ -90,7 +95,8 @@ public class GeldbetragTest {
     }
 
     @Test
-    public void testCompareTo() {
+    public void testCompareTo() 
+    {
         Geldbetrag kleiner = new Geldbetrag(100);
         Geldbetrag grosser = new Geldbetrag(200);
         Geldbetrag gleich = new Geldbetrag(100);
@@ -101,7 +107,8 @@ public class GeldbetragTest {
     }
 
     @Test
-    public void testToString() {
+    public void testToString() 
+    {
         Geldbetrag g1 = new Geldbetrag(12345);
         assertEquals("123,45", g1.toString());
 

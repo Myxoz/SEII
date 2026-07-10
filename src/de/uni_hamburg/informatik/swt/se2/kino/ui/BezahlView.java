@@ -25,7 +25,6 @@ public class BezahlView
     {
         _dialog = new JDialog((Frame) null, "Zahlung durchführen", true);
         _dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        _dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 
         // Grid-Layout: 4 Zeilen, 2 Spalten, 10 Pixel Abstand
         JPanel hauptPanel = new JPanel(new GridLayout(4, 2, 10, 10));
@@ -53,7 +52,6 @@ public class BezahlView
         hauptPanel.add(_okButton);
 
         _dialog.add(hauptPanel);
-        _dialog.pack();
         _dialog.setSize(350, 200);
         _dialog.setLocationRelativeTo(null);
     }
